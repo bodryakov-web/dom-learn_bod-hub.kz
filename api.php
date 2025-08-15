@@ -125,26 +125,7 @@ switch ($action) {
         $data = json_decode($raw, true) ?: [];
         if (admin_login((string)($data['l'] ?? ''), (string)($data['p'] ?? ''))) {
             json_response(['ok'=>true]);
-        } else {
-            // ВРЕМЕННАЯ диагностика, чтобы понять, что видит сервер из .env
-            // Не раскрываем пароль, только длину и логин
-            if (function_exists('admin_credentials')) {
-                $c = admin_credentials();
-                $envLogin = (string)($c['login'] ?? '');
-                $envPass  = (string)($c['password'] ?? '');
-                http_response_code(401);
-                json_response([
-                    'ok'=>false,
-                    'diag'=>[
-                        'env_login'=>$envLogin,
-                        'env_pass_len'=>strlen($envPass),
-                    ]
-                ]);
-            } else {
-                http_response_code(401);
-                json_response(['ok'=>false]);
-            }
-        }
+        } else { http_response_code(401); json_response(['ok'=>false]); }
         exit;
 
     case 'logout':
