@@ -21,6 +21,23 @@ declare(strict_types=1);
 function base_path(): string {
     static $cached = null;
     if ($cached !== null) return $cached;
+
+    // Попытка №1: вычислить подкаталог относительно DOCUMENT_ROOT и __DIR__
+    $doc = isset($_SERVER['DOCUMENT_ROOT']) ? realpath((string)$_SERVER['DOCUMENT_ROOT']) : false;
+    $dir = realpath(__DIR__);
+    if ($doc !== false && $dir !== false) {
+        $doc = rtrim(str_replace('\\','/', $doc), '/');
+        $dir = rtrim(str_replace('\\','/', $dir), '/');
+        if ($doc !== '' && strpos($dir, $doc) === 0) {
+            $rel = substr($dir, strlen($doc));
+            if ($rel === false) { $rel = ''; }
+            $rel = rtrim($rel, '/');
+            if ($rel === '' || $rel === '.') { return $cached = ''; }
+            return $cached = ($rel[0] === '/' ? $rel : '/' . $rel);
+        }
+    }
+
+    // Фолбэк: по SCRIPT_NAME (может быть пустым на некоторых конфигурациях)
     $base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
     if ($base === '/' || $base === '.') { $base = ''; }
     return $cached = ($base ?: '');
