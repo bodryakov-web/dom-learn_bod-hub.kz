@@ -24,7 +24,9 @@ function admin_login(string $login, string $password): bool {
         return false;
     }
     $creds = admin_credentials();
-    $ok = ($login === ($creds['login'] ?? '') && $password === ($creds['password'] ?? ''));
+    $envLogin = (string)($creds['login'] ?? '');
+    $envPass  = (string)($creds['password'] ?? '');
+    $ok = ($login === $envLogin && $password === $envPass);
     if ($ok) {
         // Перегенерируем ID сессии для безопасности и чтобы форсировать установку cookie
         if (session_status() === PHP_SESSION_ACTIVE) {
@@ -33,6 +35,11 @@ function admin_login(string $login, string $password): bool {
         $_SESSION['admin_ok'] = true;
         // Сразу закрываем сессию, чтобы данные записались до следующего запроса
         if (function_exists('session_write_close')) { @session_write_close(); }
+    }
+    // Диагностика: логируем только при неуспехе без раскрытия пароля
+    if (!$ok) {
+        $masked = str_repeat('*', strlen($envPass));
+        @error_log('[DOMLearn] Admin login failed: provided_login=' . $login . ' env_login=' . $envLogin . ' env_pass_len=' . strlen($envPass) . ' env_pass_mask=' . $masked);
     }
     return $ok;
 }
