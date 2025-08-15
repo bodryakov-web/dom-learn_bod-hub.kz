@@ -84,8 +84,19 @@
   }
 
   function api(url, opt){
-    // Поддержка базового префикса: если путь абсолютный и начинается с '/', префиксуем BASE
-    if (typeof url === 'string' && url.charAt(0) === '/') url = u(url);
+    // Поддержка базового префикса:
+    // - если абсолютный http(s) URL — оставляем как есть
+    // - если уже начинается с BASE — не дублируем BASE
+    // - если начинается с '/' — префиксуем BASE
+    if (typeof url === 'string') {
+      if (/^https?:\/\//i.test(url)) {
+        // noop
+      } else if (BASE && url.indexOf(BASE + '/') === 0) {
+        // уже префиксовано
+      } else if (url.charAt(0) === '/') {
+        url = u(url);
+      }
+    }
     opt = opt || {};
     if (!('credentials' in opt)) opt.credentials = 'same-origin';
     return fetch(url, opt).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); });
