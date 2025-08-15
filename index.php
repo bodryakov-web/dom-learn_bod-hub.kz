@@ -402,8 +402,7 @@ function render_admin_page(): void {
     // Подключаем изолированные стили админки
     echo '<link rel="stylesheet" href="' . asset('/bod/admin-style.css') . '?v=' . filemtime(__DIR__ . '/bod/admin-style.css') . '">';
     // Прокидываем базовый путь приложения через data-атрибут у контейнера
-    $base = rtrim(str_replace('\\','/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
-    $base = ($base === '' || $base === '/') ? '' : $base;
+    $base = base_path();
     echo '<div id="adminApp" data-admin-base="' . e($base) . '"></div>';
     // Подключаем модуль редактора до основного бандла админки
     echo '<script src="' . asset('/bod/editor.js') . '?v=' . filemtime(__DIR__ . '/bod/editor.js') . '"></script>';
