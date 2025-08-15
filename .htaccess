@@ -3,6 +3,8 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Базовый путь приложения (развёрнуто в /dom-learn)
+  RewriteBase /dom-learn/
 
   # Если файл или папка существуют — отдаём напрямую
   RewriteCond %{REQUEST_FILENAME} -f [OR]

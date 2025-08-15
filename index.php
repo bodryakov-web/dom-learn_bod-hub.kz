@@ -144,7 +144,7 @@ if ($uri === '/') {
         $levelPath = '/' . ((int)$lv['number']) . '-' . e($lv['slug']);
         echo '<section class="level-card card">';
         echo '  <header class="level-header">';
-        echo '    <h2 class="level-title"><a href="' . $levelPath . '">Уровень ' . (int)$lv['number'] . '. ' . e($lv['title_ru']) . '</a></h2>';
+        echo '    <h2 class="level-title"><a href="' . asset($levelPath) . '">Уровень ' . (int)$lv['number'] . '. ' . e($lv['title_ru']) . '</a></h2>';
         echo '  </header>';
 
         // Секции уровня
@@ -154,7 +154,7 @@ if ($uri === '/') {
             foreach ($sections as $sec) {
                 $sectionPath = $levelPath . '/' . ((int)$sec['section_order']) . '-' . e($sec['slug']);
                 echo '    <article class="section-card card">';
-                echo '      <h3 class="section-title"><a href="' . $sectionPath . '">Раздел ' . (int)$sec['section_order'] . '. ' . e($sec['title_ru']) . '</a></h3>';
+                echo '      <h3 class="section-title"><a href="' . asset($sectionPath) . '">Раздел ' . (int)$sec['section_order'] . '. ' . e($sec['title_ru']) . '</a></h3>';
 
                 // Уроки раздела
                 $lessons = db_get_lessons_by_section_id((int)$sec['id']);
@@ -163,7 +163,7 @@ if ($uri === '/') {
                     foreach ($lessons as $lsn) {
                         $lessonPath = $sectionPath . '/' . ((int)$lsn['lesson_order']) . '-' . e($lsn['slug']);
                         echo '        <div class="lesson-card">';
-                        echo '          <a class="lesson-link" href="' . $lessonPath . '"><span class="order">' . (int)$lsn['lesson_order'] . '.</span> ' . e($lsn['title_ru']) . '</a>';
+                        echo '          <a class="lesson-link" href="' . asset($lessonPath) . '"><span class="order">' . (int)$lsn['lesson_order'] . '.</span> ' . e($lsn['title_ru']) . '</a>';
                         echo '        </div>';
                     }
                     echo '      </div>';
@@ -203,7 +203,7 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
         foreach ($sections as $sec) {
             $path = '/' . $parts[0] . '/' . ((int)$sec['section_order']) . '-' . e($sec['slug']);
             echo '<article class="card">';
-            echo '<h2><a href="' . $path . '">Раздел ' . (int)$sec['section_order'] . '. ' . e($sec['title_ru']) . '</a></h2>';
+            echo '<h2><a href="' . asset($path) . '">Раздел ' . (int)$sec['section_order'] . '. ' . e($sec['title_ru']) . '</a></h2>';
             // Список уроков в карточке раздела
             $lessons = db_get_lessons_by_section_id((int)$sec['id']);
             if (!empty($lessons)) {
@@ -212,7 +212,7 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
                     if (!(int)$lsn['is_published']) continue; // скрываем непубликованные
                     $lessonPath = $path . '/' . ((int)$lsn['lesson_order']) . '-' . e($lsn['slug']);
                     echo '<div class="lesson-card">';
-                    echo '<a class="lesson-link" href="' . $lessonPath . '">Урок ' . (int)$lsn['lesson_order'] . '. ' . e($lsn['title_ru']) . '</a>';
+                    echo '<a class="lesson-link" href="' . asset($lessonPath) . '">Урок ' . (int)$lsn['lesson_order'] . '. ' . e($lsn['title_ru']) . '</a>';
                     echo '</div>';
                 }
                 echo '</div>';
@@ -248,12 +248,12 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
                 if (!(int)$ls['is_published']) continue; // скрываем непубликованные
                 $path = '/' . $parts[0] . '/' . $parts[1] . '/' . ((int)$ls['lesson_order']) . '-' . e($ls['slug']);
                 echo '<article class="card card-sm">';
-                echo '<h3><a href="' . $path . '">Урок ' . (int)$ls['lesson_order'] . '. ' . e($ls['title_ru']) . '</a></h3>';
+                echo '<h3><a href="' . asset($path) . '">Урок ' . (int)$ls['lesson_order'] . '. ' . e($ls['title_ru']) . '</a></h3>';
                 echo '</article>';
             }
             echo '</div>';
             echo '<nav class="lesson-nav">';
-            echo '<a class="btn" href="/" style="margin-top:3vh">На главную</a>';
+            echo '<a class="btn" href="' . asset('/') . '" style="margin-top:3vh">На главную</a>';
             echo '</nav>';
             echo '</main>';
             render_footer();
@@ -319,14 +319,14 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
             echo '<nav class="lesson-nav">';
             if ($nav['prev']) {
                 $p = '/' . $parts[0] . '/' . $parts[1] . '/' . (int)$nav['prev']['lesson_order'] . '-' . e($nav['prev']['slug']);
-                echo '<a class="btn" href="' . $p . '">◀ Предыдущий</a>';
+                echo '<a class="btn" href="' . asset($p) . '">◀ Предыдущий</a>';
             }
-            echo '<a class="btn" href="/' . $parts[0] . '/' . $parts[1] . '">В оглавление раздела</a>';
+            echo '<a class="btn" href="' . asset('/' . $parts[0] . '/' . $parts[1]) . '">В оглавление раздела</a>';
             if ($nav['next']) {
                 $n = '/' . $parts[0] . '/' . $parts[1] . '/' . (int)$nav['next']['lesson_order'] . '-' . e($nav['next']['slug']);
-                echo '<a class="btn" href="' . $n . '">Следующий ▶</a>';
+                echo '<a class="btn" href="' . asset($n) . '">Следующий ▶</a>';
             } else {
-                echo '<a class="btn" href="/">На главную</a>';
+                echo '<a class="btn" href="' . asset('/') . '">На главную</a>';
             }
             echo '</nav>';
 
@@ -357,7 +357,7 @@ function render_header(string $title, bool $with_topbar = true): void {
     if ($with_topbar) {
         echo '<header class="topbar">';
         echo '<div class="container bar">';
-        echo '<a class="brand" href="/">DOMLearn</a>';
+        echo '<a class="brand" href="' . asset('/') . '">DOMLearn</a>';
         echo '<div class="spacer"></div>';
         echo '<button id="themeToggle" class="icon-btn" title="Переключить тему">🌓</button>';
         echo '</div>';
@@ -378,7 +378,7 @@ function breadcrumbs(array $items): void {
         if ($i === $last || empty($it['href'])) {
             echo '<span class="crumb">' . e($it['label']) . '</span>';
         } else {
-            echo '<a class="crumb" href="' . e($it['href']) . '">' . e($it['label']) . '</a>';
+            echo '<a class="crumb" href="' . e(asset($it['href'])) . '">' . e($it['label']) . '</a>';
         }
     }
     echo '</nav>';
@@ -389,7 +389,7 @@ function render_404(): void {
     render_header('Страница не найдена');
     echo '<main class="container">';
     echo '<h1>404 — Страница не найдена</h1>';
-    echo '<p><a class="btn" href="/">На главную</a></p>';
+    echo '<p><a class="btn" href="' . asset('/') . '">На главную</a></p>';
     echo '</main>';
     render_footer();
 }
