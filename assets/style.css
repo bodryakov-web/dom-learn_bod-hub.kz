@@ -50,9 +50,17 @@ body{
 }
 .topbar .bar{
   display:grid;
-  grid-template-columns:auto 1fr auto;
+  grid-template-columns:auto 1fr; /* по умолчанию: логотип + растяжка, кнопку уводим вправо */
   align-items:center;
   gap:12px;
+}
+
+/* Кнопка темы всегда справа в своей колонке */
+#themeToggle{ justify-self: end; }
+
+/* Начиная с ноутбуков (>=1600px) три колонки: логотип, заголовок, кнопка */
+@media (min-width: 1600px){
+  .topbar .bar{ grid-template-columns:auto 1fr auto; }
 }
 
 .brand{
@@ -70,7 +78,7 @@ body{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.95rem;
+  font-size: 0.92rem; /* базовый размер */
   display: none; /* По умолчанию скрываем на малых и средних экранах */
   max-width: 100%;
 }
@@ -86,6 +94,27 @@ body{
 /* На больших экранах (>=1920px) слегка увеличиваем шрифт */
 @media (min-width: 1920px) {
   .header-title { font-size: 1.1rem; }
+}
+
+/* Планшеты/ноутбуки 1280-1599px: показываем короткий заголовок и 3-колоночную сетку */
+@media (min-width: 1280px) and (max-width: 1599px) {
+  .topbar .bar{ grid-template-columns:auto 1fr auto; }
+  .header-title{ display:block; font-size: 0.92rem; }
+  .header-title--short{ display:inline; }
+  .header-title--full{ display:none; }
+}
+
+/* Ноутбуки/мониторы 1600-1919px: показываем полный заголовок, шрифт +20% */
+@media (min-width: 1600px) and (max-width: 1919px) {
+  .header-title{ font-size: calc(0.92rem * 1.2); }
+  .header-title--short{ display:none; }
+  .header-title--full{ display:inline; }
+}
+
+/* На >=1920px показываем полный заголовок (размер задан выше) */
+@media (min-width: 1920px) {
+  .header-title--short{ display:none; }
+  .header-title--full{ display:inline; }
 }
 
 .spacer{
