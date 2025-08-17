@@ -290,6 +290,9 @@
         ansLabel.textContent = 'Ответы (выберите правильный):';
         item.insertBefore(ansLabel, answersWrap);
 
+        // ВАЖНО: добавляем элемент вопроса в список
+        list.appendChild(item);
+
         function addAnswerRow(val, idx, correctIdx){
           var row = document.createElement('div');
           row.className = 'answer-row';
