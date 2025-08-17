@@ -200,8 +200,11 @@
         }
         function positionBtn(pre, btn){
           var rect = pre.getBoundingClientRect();
+          // Размещаем кнопку по вертикали примерно по центру (50%),
+          // чтобы не перекрывать метку языка в верхнем углу блока кода
+          var top = rect.top + rect.height * 0.5 - 14; // 14px = половина высоты кнопки (28px)
           btn.style.left = Math.round(window.scrollX + rect.right - 8 - 28) + 'px';
-          btn.style.top  = Math.round(window.scrollY + rect.top + 8) + 'px';
+          btn.style.top  = Math.round(window.scrollY + top) + 'px';
         }
         function ensureButtons(){
           var pres = editableEl.querySelectorAll('pre');
