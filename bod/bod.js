@@ -118,7 +118,7 @@
     visit.href = u('/');
     visit.className = 'btn';
     var logout = h('button', {text:'Выйти'});
-    logout.className = 'btn';
+    logout.className = 'btn outline';
     var actions = el('div','actions');
     actions.appendChild(visit);
     actions.appendChild(logout);
@@ -184,7 +184,7 @@
       var head = el('div','head');
       head.textContent = 'Разделы — '+lv.title_ru;
       sectionsWrap.appendChild(head);
-      var addBtn = el('button','btn', '➕ Добавить раздел');
+      var addBtn = el('button','btn outline', '➕ Добавить раздел');
       addBtn.addEventListener('click', function(){
         var title = prompt('Название раздела (рус)'); if(!title) return;
         var slug = prompt('Slug (только a-z и -)'); if(!slug) return;
@@ -268,7 +268,7 @@
       head.textContent = 'Уроки — '+sec.title_ru;
       lessonsWrap.appendChild(head);
 
-      var addBtn = el('button','btn','➕ Добавить урок');
+      var addBtn = el('button','btn outline','➕ Добавить урок');
       addBtn.addEventListener('click', function(){
         // Открываем редактор нового урока (с пустым контентом)
         if (window.AdminEditor && typeof window.AdminEditor.openLessonEditor==='function') {
