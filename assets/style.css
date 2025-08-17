@@ -60,6 +60,23 @@ body{
   text-decoration: none;
   font-weight: 700;
   letter-spacing: .2px;
+  white-space: nowrap;
+}
+
+.header-title {
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 0 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .header-title {
+    display: none;
+  }
 }
 
 .spacer{

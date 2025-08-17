@@ -358,6 +358,7 @@ function render_header(string $title, bool $with_topbar = true): void {
         echo '<header class="topbar">';
         echo '<div class="container bar">';
         echo '<a class="brand" href="' . asset('/') . '">DOMLearn</a>';
+        echo '<div class="header-title">Искусство управления веб-страницей (Современный JavaScript DOM/BOM)</div>';
         echo '<div class="spacer"></div>';
         echo '<button id="themeToggle" class="icon-btn" title="Переключить тему">🌓</button>';
         echo '</div>';
