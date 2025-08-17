@@ -65,17 +65,44 @@ body{
 
 .header-title {
   color: var(--muted);
-  font-size: 0.95rem;
   text-align: center;
   padding: 0 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 1rem;
+  display: none; /* По умолчанию скрываем */
+  max-width: 100%;
 }
 
-@media (max-width: 900px) {
+/* Показываем только на очень широких экранах */
+@media (min-width: 1600px) {
   .header-title {
-    display: none;
+    display: block;
+    font-size: 1.1rem;
+    padding: 0 2rem;
+  }
+  
+  /* Уменьшаем размер шрифта, если контент не помещается */
+  @media (max-width: 1800px) {
+    .header-title {
+      font-size: 1rem;
+      padding: 0 1.5rem;
+    }
+  }
+  
+  @media (max-width: 1700px) {
+    .header-title {
+      font-size: 0.95rem;
+      padding: 0 1rem;
+    }
+  }
+  
+  @media (max-width: 1600px) {
+    .header-title {
+      font-size: 0.9rem;
+      padding: 0 0.75rem;
+    }
   }
 }
 
