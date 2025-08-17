@@ -47,12 +47,20 @@ body{
   background:var(--card);
   border-bottom:1px solid var(--border);
   backdrop-filter: blur(8px);
+  transition: transform .25s ease, opacity .2s ease; /* плавное скрытие шапки */
 }
 .topbar .bar{
   display:grid;
   grid-template-columns:auto 1fr; /* по умолчанию: логотип + растяжка, кнопку уводим вправо */
   align-items:center;
   gap:12px;
+}
+
+/* Состояние скрытой шапки при прокрутке */
+.topbar.topbar--hidden{
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Кнопка темы всегда справа в своей колонке */
@@ -280,6 +288,11 @@ h1, h2, h3{
 .lesson .lesson-body{
   display:grid;
   gap:24px;
+}
+
+/* Увеличиваем базовый размер шрифта на странице урока в 2 раза */
+.lesson{
+  font-size: 200%;
 }
 .tests .answers{
   list-style:none;

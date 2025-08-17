@@ -52,5 +52,19 @@
         });
       });
     });
+
+    // Hide topbar when page is scrolled, show only at the very top
+    var topbar = document.querySelector('.topbar');
+    if (topbar) {
+      var applyTopbarState = function(){
+        if (window.scrollY > 0) {
+          topbar.classList.add('topbar--hidden');
+        } else {
+          topbar.classList.remove('topbar--hidden');
+        }
+      };
+      applyTopbarState();
+      window.addEventListener('scroll', applyTopbarState, { passive: true });
+    }
   });
 })();
