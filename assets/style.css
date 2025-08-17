@@ -334,7 +334,35 @@ h1, h2, h3{
 .lesson table{
   overflow-x: auto;
 }
-.lesson pre{ white-space: pre-wrap; }
+
+/* Стили для блоков кода */
+.lesson pre{ 
+  white-space: pre-wrap;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Инлайновый код */
+.lesson code:not(pre > code) {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.95em;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* Блоки кода внутри pre */
+.lesson pre > code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
 /* Увеличиваем шрифт в блоках кода на 10% и ставим межстрочный интервал 1.2 */
 .lesson pre{
   font-size: 1.1em;
@@ -348,7 +376,9 @@ h1, h2, h3{
 }
 
 /* Вопрос в тесте как основной шрифт */
-.test-question h3{
+.test-question h3,
+/* Заголовок задачи как основной шрифт */
+.task h3{
   font-size: 1em;
   font-weight: 700;
 }
