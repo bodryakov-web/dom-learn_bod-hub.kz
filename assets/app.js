@@ -67,4 +67,54 @@
       window.addEventListener('scroll', applyTopbarState, { passive: true });
     }
   });
-})();
+
+  // Add copy buttons to code blocks
+  document.querySelectorAll('.lesson pre').forEach(pre => {
+    // Create copy button
+    const button = document.createElement('button');
+    button.className = 'code-copy-btn';
+    button.title = 'Копировать код';
+    button.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span>Копировать</span>
+    `;
+    
+    // Position the button
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    // Add click event
+    button.addEventListener('click', async () => {
+      const code = pre.querySelector('code')?.textContent || pre.textContent;
+      
+      try {
+        await navigator.clipboard.writeText(code);
+        
+        // Show success feedback
+        const originalText = button.innerHTML;
+        button.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Скопировано!</span>
+        `;
+        button.classList.add('copied');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy code: ', err);
+        button.textContent = 'Ошибка копирования';
+        setTimeout(() => {
+          button.innerHTML = originalText;
+        }, 2000);
+      }
+    });
+  });
+})();;
