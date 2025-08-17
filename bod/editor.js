@@ -483,6 +483,13 @@
               'PasteFromOfficeEnhanced','PasteFromOfficeEnhancedUI','PasteFromOfficeEnhancedEditing','PasteFromOfficeEnhancedPropagator',
               'CaseChange','CaseChangeUI','CaseChangeEditing'
             ],
+            codeBlock: {
+              languages: [
+                { language: 'javascript', label: 'JavaScript' },
+                { language: 'html', label: 'HTML' },
+                { language: 'css', label: 'CSS' }
+              ]
+            },
             licenseKey: 'GPL'
           }).then(function(ed){
             tasksEditors.push({tid: tid, editor: ed, titleIn: titleIn});
