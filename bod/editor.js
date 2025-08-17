@@ -200,9 +200,9 @@
         }
         function positionBtn(pre, btn){
           var rect = pre.getBoundingClientRect();
-          // Размещаем кнопку по вертикали примерно по центру (50%),
-          // чтобы не перекрывать метку языка в верхнем углу блока кода
-          var top = rect.top + rect.height * 0.5 - 14; // 14px = половина высоты кнопки (28px)
+          // Размещаем кнопку в правом верхнем углу, но немного ниже метки языка (например, HTML)
+          // Отступ сверху ~32px от верхней границы блока кода
+          var top = rect.top + 32;
           btn.style.left = Math.round(window.scrollX + rect.right - 8 - 28) + 'px';
           btn.style.top  = Math.round(window.scrollY + top) + 'px';
         }
