@@ -112,7 +112,10 @@
       style.id = id;
       style.textContent = 
         '.ck-content pre, .ck-content code{ font-family: "Courier New", Courier, monospace; }' +
-        '.ck-content pre{ font-size: 1rem; line-height: 1.6; }';
+        '.ck-content pre{ font-size: 1rem; line-height: 1.6; }' +
+        '.ck-code-copy-btn{ position:absolute; z-index:9999; cursor:pointer; border:1px solid #d1d5db; background:#fff; color:#111827; padding:4px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,0.06); width:28px; height:28px; display:flex; align-items:center; justify-content:center; }' +
+        '.ck-code-copy-btn:hover{ background:#f3f4f6; }' +
+        '.ck-code-copy-btn svg{ width:16px; height:16px; display:block; }';
       document.head.appendChild(style);
     })();
 
@@ -173,9 +176,76 @@
         .then(function(ed){
           ckeEditor = ed;
           ed.plugins.get('FileRepository').createUploadAdapter = function(loader){ return new UploadAdapter(loader); };
+          attachCodeCopyButtons(ed);
         })
         .catch(function(e){ console.warn('CKE init error', e); });
     });
+
+    // Постоянные кнопки копирования для каждого блока кода (pre), вне контента редактора
+    function attachCodeCopyButtons(editor){
+      try{
+        var editableEl = editor && editor.ui && editor.ui.view && editor.ui.view.editable && editor.ui.view.editable.element;
+        if (!editableEl) return;
+        var map = new WeakMap(); // pre -> {btn}
+
+        function createBtn(){
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'ck-code-copy-btn';
+          btn.title = 'Копировать код';
+          btn.setAttribute('aria-label','Копировать код');
+          btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/><rect x="4" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/></svg>';
+          document.body.appendChild(btn);
+          return btn;
+        }
+        function positionBtn(pre, btn){
+          var rect = pre.getBoundingClientRect();
+          btn.style.left = Math.round(window.scrollX + rect.right - 8 - 28) + 'px';
+          btn.style.top  = Math.round(window.scrollY + rect.top + 8) + 'px';
+        }
+        function ensureButtons(){
+          var pres = editableEl.querySelectorAll('pre');
+          pres.forEach(function(pre){
+            if (!map.get(pre)){
+              var btn = createBtn();
+              btn.addEventListener('click', function(){
+                var text = pre.innerText || pre.textContent || '';
+                var done = function(){
+                  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
+                  setTimeout(function(){ btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/><rect x="4" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/></svg>'; }, 1200);
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText){
+                  navigator.clipboard.writeText(text).then(done).catch(function(){ done(); });
+                } else {
+                  try{ var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); }catch(e){ done(); }
+                }
+              });
+              map.set(pre, {btn: btn});
+            }
+            positionBtn(pre, map.get(pre).btn);
+          });
+          // Удаляем кнопки для удалённых pre
+          Array.from(map).forEach(function(entry){
+            var pre = entry[0], rec = entry[1];
+            if (!editableEl.contains(pre)){
+              try{ rec.btn.remove(); }catch(_){ }
+              map.delete(pre);
+            }
+          });
+        }
+
+        var mo = new MutationObserver(function(){ ensureButtons(); });
+        mo.observe(editableEl, { childList: true, subtree: true, characterData: true });
+        window.addEventListener('scroll', ensureButtons, true);
+        window.addEventListener('resize', ensureButtons);
+        ensureButtons();
+
+        editor.on('destroy', function(){
+          try{ mo.disconnect(); }catch(_){ }
+          try{ Array.from(map).forEach(function(entry){ entry[1].btn.remove(); }); }catch(_){ }
+        });
+      }catch(e){ /* ignore */ }
+    }
 
     // --- Конструктор тестов и задач ---
     var testsBuilderWrap = document.createElement('div');
@@ -278,6 +348,7 @@
             ed.plugins.get('FileRepository').createUploadAdapter = function(loader){ return new UploadAdapter(loader); };
             if (q && q.question_html){ ed.setData(q.question_html); }
             else if (q && q.question){ ed.setData(q.question); }
+            attachCodeCopyButtons(ed);
           }).catch(function(e){ console.warn('CKE tests init error', e); });
         }
         if (Ctor) initQ(); else ensureCKE(initQ);
@@ -400,6 +471,7 @@
             tasksEditors.push({tid: tid, editor: ed, titleIn: titleIn});
             ed.plugins.get('FileRepository').createUploadAdapter = function(loader){ return new UploadAdapter(loader); };
             if (t && t.text_html){ ed.setData(t.text_html); }
+            attachCodeCopyButtons(ed);
           }).catch(function(e){ console.warn('CKE tasks init error', e); });
         }
         if (Ctor) initT(); else ensureCKE(initT);
