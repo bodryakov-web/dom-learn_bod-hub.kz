@@ -35,6 +35,12 @@ body{
   line-height:1.6;
 }
 
+/* Глобально исключаем горизонтальную прокрутку */
+html, body{
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .container{
   width:min(1200px, 92vw);
   margin-inline:auto;
@@ -293,7 +299,32 @@ h1, h2, h3{
 /* Увеличиваем базовый размер шрифта на странице урока в 2 раза */
 .lesson{
   font-size: 200%;
+  /* Страхуемся от горизонтальной прокрутки внутри урока */
+  overflow-x: hidden;
 }
+.lesson p{
+  /* Примерно на 10% меньше и адаптивно */
+  font-size: clamp(0.9em, 0.95em + 0.2vw, 1em);
+  line-height: 1.1; /* немного меньше межстрочный интервал */
+  margin: 0 0 0.9em; /* немного меньше отступ между абзацами */
+  overflow-wrap: anywhere; /* перенос длинных слов/ссылок */
+}
+
+/* Медиа в уроке не выходят за границы */
+.lesson img,
+.lesson video,
+.lesson iframe,
+.lesson table{
+  max-width: 100%;
+}
+
+/* Длинные блоки кода и таблицы не вызывают горизонтальную прокрутку страницы */
+.lesson pre,
+.lesson code,
+.lesson table{
+  overflow-x: auto;
+}
+.lesson pre{ white-space: pre-wrap; }
 .tests .answers{
   list-style:none;
   padding:0;
