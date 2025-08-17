@@ -70,40 +70,22 @@ body{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 1rem;
-  display: none; /* По умолчанию скрываем */
+  font-size: 0.95rem;
+  display: none; /* По умолчанию скрываем на малых и средних экранах */
   max-width: 100%;
 }
 
-/* Показываем только на очень широких экранах */
+/* Для корректной обрезки в CSS Grid */
+.topbar .bar .header-title{ min-width: 0; }
+
+/* Показываем заголовок только на ноутбуках (>=1600px) и больше */
 @media (min-width: 1600px) {
-  .header-title {
-    display: block;
-    font-size: 1.1rem;
-    padding: 0 2rem;
-  }
-  
-  /* Уменьшаем размер шрифта, если контент не помещается */
-  @media (max-width: 1800px) {
-    .header-title {
-      font-size: 1rem;
-      padding: 0 1.5rem;
-    }
-  }
-  
-  @media (max-width: 1700px) {
-    .header-title {
-      font-size: 0.95rem;
-      padding: 0 1rem;
-    }
-  }
-  
-  @media (max-width: 1600px) {
-    .header-title {
-      font-size: 0.9rem;
-      padding: 0 0.75rem;
-    }
-  }
+  .header-title { display: block; }
+}
+
+/* На больших экранах (>=1920px) слегка увеличиваем шрифт */
+@media (min-width: 1920px) {
+  .header-title { font-size: 1.1rem; }
 }
 
 .spacer{
