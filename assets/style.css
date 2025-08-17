@@ -363,9 +363,9 @@ h1, h2, h3{
   padding: 0;
   font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
 }
-/* Увеличиваем шрифт в блоках кода на 10% и ставим межстрочный интервал 1.2 */
+/* Уменьшаем шрифт в блоках кода на 10% и ставим межстрочный интервал 1.2 */
 .lesson pre{
-  font-size: 1.1em;
+  font-size: 0.9em;
   line-height: 1.2;
 }
 
