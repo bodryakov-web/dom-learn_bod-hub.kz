@@ -104,6 +104,18 @@
     };
     UploadAdapter.prototype.abort = function(){};
 
+    // Один раз инжектируем стили для отображения кода моноширинно
+    (function injectEditorStyles(){
+      var id = 'dl-editor-code-styles';
+      if (document.getElementById(id)) return;
+      var style = document.createElement('style');
+      style.id = id;
+      style.textContent = 
+        '.ck-content pre, .ck-content code{ font-family: "Courier New", Courier, monospace; }' +
+        '.ck-content pre{ font-size: 1rem; line-height: 1.6; }';
+      document.head.appendChild(style);
+    })();
+
     ensureCKE(function(){
       var Ctor = getClassicCtor();
       if (!Ctor) return;
@@ -112,13 +124,36 @@
           items: [
             'heading',
             '|',
-            'bold', 'italic', 'link', 'fontColor',
+            'bold', 'italic', 'link', 'fontColor', 'fontFamily', 'code',
             '|',
             'alignment',
             '|',
-            'imageUpload', 'blockQuote',
+            'imageUpload', 'blockQuote', 'codeBlock',
             '|',
             'undo', 'redo'
+          ]
+        },
+        heading: {
+          // Оставляем стандартные опции абзацев/заголовков ("Code" доступен через кнопку Code Block)
+        },
+        fontFamily: {
+          options: [
+            'default',
+            'Courier New, Courier, monospace',
+            'Consolas, Monaco, monospace',
+            'Fira Code, monospace',
+            'Arial, Helvetica, sans-serif',
+            'Times New Roman, Times, serif'
+          ],
+          supportAllValues: true
+        },
+        codeBlock: {
+          languages: [
+            { language: 'plaintext', label: 'Plain text' },
+            { language: 'javascript', label: 'JavaScript' },
+            { language: 'php', label: 'PHP' },
+            { language: 'html', label: 'HTML' },
+            { language: 'css', label: 'CSS' }
           ]
         },
         removePlugins: [
@@ -127,7 +162,7 @@
           'PresenceList','Comments','TrackChanges','TrackChangesData','RevisionHistory',
           'CloudServices','CKBox','CKBoxUtils','CKBoxImageEdit','CKBoxImageEditUI','CKBoxImageEditEditing','CKFinder','EasyImage',
           'ExportPdf','ExportWord','WProofreader','MathType',
-          'SlashCommand','Template','DocumentOutline','FormatPainter','TableOfContents','Style','Pagination',
+          'SlashCommand','Template','DocumentOutline','FormatPainter','TableOfContents','Pagination',
           'AIAssistant',
           'MultiLevelList','MultiLevelListUI','MultiLevelListEditing',
           'PasteFromOfficeEnhanced','PasteFromOfficeEnhancedUI','PasteFromOfficeEnhancedEditing','PasteFromOfficeEnhancedPropagator',
@@ -209,14 +244,33 @@
             return; 
           }
           C.create(qArea, {
-            toolbar: { items: ['heading','|','bold','italic','link','fontColor','|','alignment','|','imageUpload','blockQuote','|','undo','redo'] },
+            toolbar: { items: ['heading','|','bold','italic','link','fontColor','fontFamily','code','codeBlock','|','alignment','|','imageUpload','blockQuote','|','undo','redo'] },
+            fontFamily: {
+              options: [
+                'default',
+                'Courier New, Courier, monospace',
+                'Consolas, Monaco, monospace',
+                'Fira Code, monospace',
+                'Arial, Helvetica, sans-serif',
+                'Times New Roman, Times, serif'
+              ],
+              supportAllValues: true
+            },
+            codeBlock: {
+              languages: [
+                { language: 'plaintext', label: 'Plain text' },
+                { language: 'javascript', label: 'JavaScript' },
+                { language: 'php', label: 'PHP' },
+                { language: 'html', label: 'HTML' },
+                { language: 'css', label: 'CSS' }
+              ]
+            },
             removePlugins: [
               'MediaEmbed','List','Indent','IndentBlock',
               'RealTimeCollaborativeComments','RealTimeCollaborativeTrackChanges','RealTimeCollaborativeRevisionHistory',
               'PresenceList','Comments','TrackChanges','TrackChangesData','RevisionHistory',
               'CloudServices','CKBox','CKBoxUtils','CKBoxImageEdit','CKBoxImageEditUI','CKBoxImageEditEditing','CKFinder','EasyImage',
-              'ExportPdf','ExportWord','WProofreader','MathType','SlashCommand','Template','DocumentOutline','FormatPainter','TableOfContents','Style','Pagination',
-              'AIAssistant','MultiLevelList','MultiLevelListUI','MultiLevelListEditing','PasteFromOfficeEnhanced','PasteFromOfficeEnhancedUI','PasteFromOfficeEnhancedEditing','PasteFromOfficeEnhancedPropagator','CaseChange','CaseChangeUI','CaseChangeEditing'
+              'ExportPdf','ExportWord','WProofreader','MathType','SlashCommand','Template','DocumentOutline','FormatPainter','TableOfContents','Pagination','AIAssistant','MultiLevelList','MultiLevelListUI','MultiLevelListEditing','PasteFromOfficeEnhanced','PasteFromOfficeEnhancedUI','PasteFromOfficeEnhancedEditing','PasteFromOfficeEnhancedPropagator','CaseChange','CaseChangeUI','CaseChangeEditing'
             ],
             licenseKey: 'GPL'
           }).then(function(ed){
