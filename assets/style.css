@@ -335,6 +335,30 @@ h1, h2, h3{
   overflow-x: auto;
 }
 .lesson pre{ white-space: pre-wrap; }
+/* Увеличиваем шрифт в блоках кода на 10% и ставим межстрочный интервал 1.2 */
+.lesson pre{
+  font-size: 1.1em;
+  line-height: 1.2;
+}
+
+/* Заголовки разделов 'Тесты' и 'Задачи' как основной шрифт */
+.lesson h2{
+  font-size: 1em;
+  font-weight: 700;
+}
+
+/* Вопрос в тесте как основной шрифт */
+.test-question h3{
+  font-size: 1em;
+  font-weight: 700;
+}
+
+/* Варианты ответов на 10% меньше основного шрифта */
+.answer{
+  font-size: 0.9em;
+  line-height: 1.2;
+  padding: 8px 12px;
+}
 .tests .answers{
   list-style:none;
   padding:0;
