@@ -331,7 +331,7 @@
             return; 
           }
           C.create(qArea, {
-            toolbar: { items: ['heading','|','bold','italic','link','fontColor','fontFamily','code','codeBlock','|','alignment','|','imageUpload','blockQuote','|','undo','redo'] },
+            toolbar: { items: ['heading','|','bold','italic','link','fontColor','fontFamily','code','|','alignment','|','imageUpload','blockQuote','|','undo','redo'] },
             fontFamily: {
               options: [
                 'default',
@@ -471,7 +471,7 @@
         function initT(){
           var C = getClassicCtor(); if(!C){ console.warn('CKE not ready for tasks'); return; }
           C.create(body, {
-            toolbar: { items: ['heading','|','bold','italic','link','fontColor','|','alignment','|','imageUpload','blockQuote','|','undo','redo'] },
+            toolbar: { items: ['heading','|','bold','italic','link','fontColor','code','codeBlock','|','alignment','|','imageUpload','blockQuote','|','undo','redo'] },
             removePlugins: [
               'MediaEmbed','List','Indent','IndentBlock',
               'RealTimeCollaborativeComments','RealTimeCollaborativeTrackChanges','RealTimeCollaborativeRevisionHistory',
