@@ -119,6 +119,17 @@
       document.head.appendChild(style);
     })();
 
+    // Инъекция базовых стилей параграфов редактора: чуть меньше межстрочный интервал и отступ между абзацами
+    (function injectParagraphStyles(){
+      var id = 'dl-editor-paragraph-styles';
+      if (document.getElementById(id)) return;
+      var style = document.createElement('style');
+      style.id = id;
+      style.textContent =
+        '.ck-content p{ line-height: 1.1; margin: 0 0 0.6em 0; }';
+      document.head.appendChild(style);
+    })();
+
     ensureCKE(function(){
       var Ctor = getClassicCtor();
       if (!Ctor) return;
