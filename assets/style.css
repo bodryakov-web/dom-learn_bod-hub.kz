@@ -373,13 +373,15 @@ h1, h2, h3{
 /* Стили для таблиц в контенте уроков */
 .lesson table {
   width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--border);
-  margin: 1em 0;
+  margin: 1em 0 1em 0;
   font-size: 0.8em; /* На 20% меньше основного текста (1em * 0.8) */
   line-height: 1; /* Межстрочный интервал = 1 */
   word-wrap: break-word;
   word-break: keep-all; /* Запрет разрыва слов */
+  table-layout: fixed;
 }
 
 .lesson table,
@@ -390,7 +392,7 @@ h1, h2, h3{
 
 .lesson th,
 .lesson td {
-  padding: 8px 12px;
+  padding: 0.5vh 0.5vw;
   text-align: left;
   vertical-align: top;
 }
