@@ -560,10 +560,22 @@
 
     btnSave.addEventListener('click', function(){
       send(false)
-        .then(function(){ flash(status1,'Сохранено'); })
-        .then(function(){ dlg.remove(); })
-        .then(function(){ if(typeof onDone==='function') onDone(ls.section_id); })
-        .catch(function(e){ if(e && e.message==='Неверный slug') return; alert('Ошибка: '+e.message); });
+        .then(function(){ 
+          flash(status1,'Сохранено');
+          // Update the lesson ID if it was a new lesson
+          if (ls && ls.id === null) {
+            return api('/api.php?action=lesson_get&id=' + encodeURIComponent(payload.id))
+              .then(function(updatedLesson) {
+                if (updatedLesson && updatedLesson.id) {
+                  ls.id = updatedLesson.id;
+                }
+              });
+          }
+        })
+        .catch(function(e){ 
+          if(e && e.message==='Неверный slug') return; 
+          alert('Ошибка: '+e.message); 
+        });
     });
     btnPub.addEventListener('click', function(){
       send(true)
