@@ -163,7 +163,7 @@ if ($uri === '/') {
                     foreach ($lessons as $lsn) {
                         $lessonPath = $sectionPath . '/' . ((int)$lsn['lesson_order']) . '-' . e($lsn['slug']);
                         echo '        <div class="lesson-card">';
-                        echo '          <a class="lesson-link" href="' . asset($lessonPath) . '"><span class="order">' . (int)$lsn['lesson_order'] . '.</span> ' . e($lsn['title_ru']) . '</a>';
+                        echo '          <a class="lesson-link" href="' . asset($lessonPath) . '">' . e($lsn['title_ru']) . '</a>';
                         echo '        </div>';
                     }
                     echo '      </div>';
