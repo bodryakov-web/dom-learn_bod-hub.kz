@@ -233,15 +233,20 @@ h1, h2, h3{
 }
 
 .lesson-list{
-  margin-top:10px;
-  display:grid;
-  gap:8px;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .lesson-card{
-  border:1px solid var(--border);
-  border-radius:10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   background: var(--bg);
   transition: transform .1s ease, box-shadow .1s ease, border-color .1s ease;
+  flex: 1 1 calc(33.333% - 6px);
+  min-width: 200px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .lesson-card:hover{
   transform: translateY(-1px);
