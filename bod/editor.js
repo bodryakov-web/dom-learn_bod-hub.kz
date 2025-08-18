@@ -126,7 +126,8 @@
       var style = document.createElement('style');
       style.id = id;
       style.textContent =
-        '.ck-content p{ line-height: 1.1; margin: 0 0 0.6em 0; }';
+        '.ck-content p{ line-height: 1.1; margin: 0 0 0.6em 0; }' +
+        '.ck.ck-editor__editable .mini { font-size: 0.5em !important; line-height: 1.2; }';
       document.head.appendChild(style);
     })();
 
@@ -145,6 +146,15 @@
             'imageUpload', 'blockQuote', 'codeBlock',
             '|',
             'undo', 'redo'
+          ]
+        },
+        style: {
+          definitions: [
+            {
+              name: 'Мини',
+              element: 'span',
+              classes: ['mini']
+            }
           ]
         },
         heading: {
