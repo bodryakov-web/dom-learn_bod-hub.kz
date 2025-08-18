@@ -136,7 +136,7 @@ if ($uri === '/bod') {
 // Главная: список уровней
 if ($uri === '/') {
     $levels = db_get_levels();
-    render_header('Уровни');
+    render_header('Главная');
     echo '<main class="container">';
     echo '';
     // Каждый уровень — на всю ширину, внутри — карточки разделов и уроков
@@ -348,7 +348,7 @@ exit;
 function render_header(string $title, bool $with_topbar = true): void {
     echo '<!doctype html><html lang="ru"><head>';
     echo '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">';
-    echo '<title>' . e($title) . ' — DOMLearn</title>';
+    echo '<title>' . e($title) . ' | DOMLearn</title>';
     echo '<link rel="icon" href="' . asset('/images/favicon.ico') . '" type="image/x-icon">';
     // Публичные стили и скрипты из /assets (с версионированием через filemtime)
     echo '<link rel="stylesheet" href="' . asset('/assets/style.css') . '?v=' . filemtime(__DIR__ . '/assets/style.css') . '">';
