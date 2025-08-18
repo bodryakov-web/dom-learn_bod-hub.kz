@@ -125,9 +125,7 @@
       if (document.getElementById(id)) return;
       var style = document.createElement('style');
       style.id = id;
-      style.textContent =
-        '.ck-content p{ line-height: 1.1; margin: 0 0 0.6em 0; }' +
-        '.ck.ck-editor__editable .mini, .lesson-content .mini, .mini, .theory .mini { font-size: 0.5em !important; line-height: 1.2; display: inline-block; }';
+      style.textContent = '.ck-content p{ line-height: 1.1; margin: 0 0 0.6em 0; }';
       document.head.appendChild(style);
     })();
 
@@ -141,22 +139,14 @@
             '|',
             'bold', 'italic', 'link', 'fontColor', 'fontFamily', 'code',
             '|',
-            'style', 'alignment',
+            'alignment',
             '|',
             'imageUpload', 'blockQuote', 'codeBlock',
             '|',
             'undo', 'redo'
           ]
         },
-        style: {
-          definitions: [
-            {
-              name: 'Мини',
-              element: 'span',
-              classes: ['mini']
-            }
-          ]
-        },
+
         heading: {
           // Оставляем стандартные опции абзацев/заголовков ("Code" доступен через кнопку Code Block)
         },
