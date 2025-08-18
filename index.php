@@ -239,16 +239,16 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
             breadcrumbs([
                 ['href' => '/', 'label' => 'Главная'],
                 ['href' => '/' . $parts[0], 'label' => 'Уровень ' . $levelNumber . '. ' . $level['title_ru']],
-                ['href' => '', 'label' => 'Раздел ' . $sectionOrder . '. ' . $section['title_ru']],
+                ['href' => '', 'label' => $section['title_ru']],
             ]);
             echo '<main class="container">';
-            echo '<h1>Раздел ' . (int)$sectionOrder . '. ' . e($section['title_ru']) . '</h1>';
+            echo '<h1>' . e($section['title_ru']) . '</h1>';
             echo '<div class="grid cards">';
             foreach ($lessons as $ls) {
                 if (!(int)$ls['is_published']) continue; // скрываем непубликованные
                 $path = '/' . $parts[0] . '/' . $parts[1] . '/' . ((int)$ls['lesson_order']) . '-' . e($ls['slug']);
                 echo '<article class="card card-sm">';
-                echo '<h3><a href="' . asset($path) . '">Урок ' . (int)$ls['lesson_order'] . '. ' . e($ls['title_ru']) . '</a></h3>';
+                echo '<h3><a href="' . asset($path) . '">' . e($ls['title_ru']) . '</a></h3>';
                 echo '</article>';
             }
             echo '</div>';
@@ -276,8 +276,8 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
             breadcrumbs([
                 ['href' => '/', 'label' => 'Главная'],
                 ['href' => '/' . $parts[0], 'label' => 'Уровень ' . $levelNumber . '. ' . $level['title_ru']],
-                ['href' => '/' . $parts[0] . '/' . $parts[1], 'label' => 'Раздел ' . $sectionOrder . '. ' . $section['title_ru']],
-                ['href' => '', 'label' => 'Урок ' . $lessonOrder . '. ' . $lesson['title_ru']],
+                ['href' => '/' . $parts[0] . '/' . $parts[1], 'label' => $section['title_ru']],
+                ['href' => '', 'label' => $lesson['title_ru']],
             ]);
             echo '<main class="container lesson">';
             echo '<article class="lesson-body">';

@@ -197,6 +197,17 @@ h1, h2, h3{
   font-size: 1.05rem;
 }
 
+.card h3{
+  margin:0 0 12px 0;
+  font-size:1.2em;
+  color:var(--fg);
+  font-weight: normal;
+}
+
+.grid.cards .card-sm h3 {
+  font-weight: normal;
+}
+
 /* ===== Главная: уровни -> разделы -> уроки ===== */
 .level-card{
   margin: 16px 0;
