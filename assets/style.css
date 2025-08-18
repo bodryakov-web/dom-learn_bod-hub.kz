@@ -318,6 +318,8 @@ h1, h2, h3{
   /* Страхуемся от горизонтальной прокрутки внутри урока */
   overflow-x: hidden;
   width: 100%;
+  max-width: min(1200px, 92vw);
+  margin: 0 auto;
   box-sizing: border-box;
   padding: 0 10px;
 }
