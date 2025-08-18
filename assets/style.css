@@ -399,6 +399,18 @@ h1, h2, h3{
   line-height: 1.2;
 }
 
+/* Стиль 'мини' для уменьшения текста в два раза */
+.mini {
+  font-size: 0.5em !important;
+  line-height: 1.2;
+  display: inline-block;
+}
+
+.lesson pre{
+  font-size: 0.9em;
+  line-height: 1.2;
+}
+
 /* Заголовки разделов 'Тесты' и 'Задачи' как основной шрифт */
 .lesson h2{
   font-size: 1em;
