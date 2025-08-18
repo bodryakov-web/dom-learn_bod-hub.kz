@@ -390,17 +390,25 @@ h1, h2, h3{
   table-layout: fixed;
 }
 
+/* Стили для таблиц и ячеек */
 .lesson table,
 .lesson th,
 .lesson td {
   border: 1px solid var(--border);
 }
 
-.lesson th,
-.lesson td {
-  padding: 1vh 1vw; /* 1vh по вертикали, 1vw по горизонтали */
-  text-align: left;
-  vertical-align: top;
+/* Принудительное применение стилей для ячеек таблицы */
+.lesson table th,
+.lesson table td {
+  padding: 1vh 1vw !important; /* 1vh по вертикали, 1vw по горизонтали */
+  text-align: left !important;
+  vertical-align: top !important;
+}
+
+/* Дополнительное правило для figure.table */
+.lesson figure.table table th,
+.lesson figure.table table td {
+  padding: 1vh 1vw !important;
 }
 
 .lesson pre{ 
