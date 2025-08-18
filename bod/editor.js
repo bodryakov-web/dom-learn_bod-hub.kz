@@ -141,7 +141,7 @@
             '|',
             'bold', 'italic', 'link', 'fontColor', 'fontFamily', 'code',
             '|',
-            'alignment',
+            'style', 'alignment',
             '|',
             'imageUpload', 'blockQuote', 'codeBlock',
             '|',
