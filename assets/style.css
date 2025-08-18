@@ -317,6 +317,9 @@ h1, h2, h3{
   font-size: 180%;
   /* Страхуемся от горизонтальной прокрутки внутри урока */
   overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px;
 }
 .lesson p{
   /* Примерно на 10% меньше и адаптивно */
@@ -324,7 +327,11 @@ h1, h2, h3{
   font-size: clamp(0.855em, 0.9em + 0.2vw, 0.95em);
   line-height: 1.2; /* установленный межстрочный интервал */
   margin: 0 0 0.6em; /* уменьшенный отступ между абзацами в 1.5 раза */
-  overflow-wrap: anywhere; /* перенос длинных слов/ссылок */
+  overflow-wrap: break-word; /* перенос длинных слов/ссылок */
+  word-wrap: break-word; /* для совместимости */
+  word-break: break-word; /* переносит слова, если они не помещаются */
+  hyphens: auto; /* автоматическая расстановка переносов */
+  max-width: 100%; /* ограничиваем ширину контейнера */
 }
 
 /* Заголовок урока — такого же размера, как основной абзац (выделение только жирностью) */
@@ -347,7 +354,16 @@ h1, h2, h3{
 /* Длинные блоки кода и таблицы не вызывают горизонтальную прокрутку страницы */
 .lesson pre,
 .lesson code,
-.lesson table{
+.lesson table,
+.lesson pre code {
+  max-width: 100%;
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  overflow-wrap: break-word;   /* Modern browsers */
+  word-break: break-word;      /* Non-standard for WebKit */
   overflow-x: auto;
 }
 
