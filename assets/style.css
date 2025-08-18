@@ -371,12 +371,18 @@ h1, h2, h3{
 
 /* Стили для блоков кода */
 /* Стили для таблиц в контенте уроков */
-.lesson table {
+.lesson figure.table {
+  width: 100%;
+  margin: 1em 0;
+  padding: 0;
+}
+
+.lesson figure.table > table {
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--border);
-  margin: 1em 0 1em 0;
+  margin: 0;
   font-size: 0.8em; /* На 20% меньше основного текста (1em * 0.8) */
   line-height: 1; /* Межстрочный интервал = 1 */
   word-wrap: break-word;
@@ -392,7 +398,7 @@ h1, h2, h3{
 
 .lesson th,
 .lesson td {
-  padding: 0.5vh 0.5vw;
+  padding: 1vh 1vw; /* 1vh по вертикали, 1vw по горизонтали */
   text-align: left;
   vertical-align: top;
 }
