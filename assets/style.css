@@ -370,6 +370,31 @@ h1, h2, h3{
 }
 
 /* Стили для блоков кода */
+/* Стили для таблиц в контенте уроков */
+.lesson table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  margin: 1em 0;
+  font-size: 0.8em; /* На 20% меньше основного текста (1em * 0.8) */
+  line-height: 1; /* Межстрочный интервал = 1 */
+  word-wrap: break-word;
+  word-break: keep-all; /* Запрет разрыва слов */
+}
+
+.lesson table,
+.lesson th,
+.lesson td {
+  border: 1px solid var(--border);
+}
+
+.lesson th,
+.lesson td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
 .lesson pre{ 
   position: relative;
   white-space: pre-wrap;
