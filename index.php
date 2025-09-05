@@ -203,7 +203,7 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
         foreach ($sections as $sec) {
             $path = '/' . $parts[0] . '/' . ((int)$sec['section_order']) . '-' . e($sec['slug']);
             echo '<article class="card">';
-            echo '<h2><a href="' . asset($path) . '">Раздел ' . (int)$sec['section_order'] . '. ' . e($sec['title_ru']) . '</a></h2>';
+            echo '<h2><a href="' . asset($path) . '">' . e($sec['title_ru']) . '</a></h2>';
             // Список уроков в карточке раздела
             $lessons = db_get_lessons_by_section_id((int)$sec['id']);
             if (!empty($lessons)) {
