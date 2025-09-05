@@ -1,6 +1,4 @@
-/* Стили админ-панели DOMLearn
-   Цель: изолировать оформление админки от публичной части
-   Примечание: подключается только в админке */
+/* Стили админ-панели  */
 
 :root {
   --admin-accent: #1f6feb;
@@ -159,7 +157,10 @@ button.btn.outline{
   box-shadow: var(--shadow);
 }
 
-.admin .head{ font-weight:600; margin-bottom:10px; }
+.admin .head { 
+  font-weight:600; 
+  margin-bottom:10px; 
+}
 
 .admin .level-tabs{
   display:grid;
@@ -217,7 +218,10 @@ button.btn.outline{
   cursor:pointer;
 }
 
-.admin .sm:hover{ background:var(--primary-weak); border-color:var(--primary); }
+.admin .sm:hover {
+  background:var(--primary-weak); 
+  border-color:var(--primary); 
+}
 
 /* Модальное окно и форма (используется в админке) */
 .modal{
@@ -267,6 +271,7 @@ button.btn.outline{
 }
 
 .form .status{ color: #16a34a; }
+
 .modal-close{
   position:absolute;
   top:8px;
@@ -278,6 +283,7 @@ button.btn.outline{
   cursor:pointer;
   color: var(--muted);
 }
+
 .modal-close:hover{
   color: var(--fg);
   background: var(--card);
@@ -285,14 +291,14 @@ button.btn.outline{
 }
 
 /* Адаптив админки */
-@media (max-width: 720px){
+@media (max-width: 719px){
   .admin .admin-shell{ grid-template-columns: 1fr; }
   .form .row{ grid-template-columns: auto 1fr; grid-auto-flow: row; }
   .modal-box{ padding: 12px; }
   .admin .item{ padding: 8px 10px; }
 }
 
-@media (min-width: 721px) and (max-width: 1280px){
+@media (min-width: 720px) and (max-width: 1279px){
   .admin .admin-shell{ grid-template-columns: 1fr; }
   .modal-box{ padding: 14px; }
   .admin .item{ padding: 10px 12px; }

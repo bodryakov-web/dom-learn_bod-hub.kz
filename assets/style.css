@@ -105,11 +105,6 @@ html, body{
   .header-title { display: block; }
 }
 
-/* На больших экранах (>=1920px) слегка увеличиваем шрифт */
-@media (min-width: 1920px) {
-  .header-title { font-size: 1.1rem; }
-}
-
 /* Планшеты/ноутбуки 1280-1599px: показываем короткий заголовок и 3-колоночную сетку */
 @media (min-width: 1280px) and (max-width: 1599px) {
   .topbar .bar{ grid-template-columns:auto 1fr auto; }
@@ -126,15 +121,15 @@ html, body{
   .header-title--full{ display:none; }
 }
 
-/* Ноутбуки/мониторы 1600-1919px: показываем полный заголовок, шрифт +20% */
-@media (min-width: 1600px) and (max-width: 1919px) {
+/* Ноутбуки/мониторы 1600-1920px: показываем полный заголовок, шрифт +20% */
+@media (min-width: 1600px) and (max-width: 1920px) {
   .header-title{ font-size: calc(0.92rem * 1.2); }
   .header-title--short{ display:none; }
   .header-title--full{ display:inline; }
 }
 
-/* На >=1920px показываем полный заголовок (размер задан выше) */
-@media (min-width: 1920px) {
+/* На >=1921px показываем полный заголовок (размер задан выше) */
+@media (min-width: 1921px) {
   .header-title--short{ display:none; }
   .header-title--full{ display:inline; }
 }
@@ -524,8 +519,8 @@ h1, h2, h3{
 }
 
 /* Wide screens: place questions in 2 columns */
-/* Notebooks: 1281–1600 */
-@media (min-width: 1281px) and (max-width: 1600px){
+/* Notebooks: 1280–1599 */
+@media (min-width: 1280px) and (max-width: 1599px){
   .tests{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -547,8 +542,8 @@ h1, h2, h3{
     margin-top: 0;
   }
 }
-/* Monitors: 1601–1920 */
-@media (min-width: 1601px) and (max-width: 1920px){
+/* Monitors: 1600–1920 */
+@media (min-width: 1600px) and (max-width: 1920px){
   .tests{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -633,11 +628,13 @@ body.theme-dark .answer.wrong{
 }
 
 
+
 /* ===========================
-   Адаптив по брейкпойнтам ТЗ
+   Адаптив
    =========================== */
-/* Смартфоны: <=720px */
-@media (max-width: 720px){
+
+/* Смартфоны: <=719px */
+@media (max-width: 719px){
   
   /* Настройки публичного интерфейса */
   .lesson{ font-size: 150%; }
@@ -664,18 +661,19 @@ body.theme-dark .answer.wrong{
   .lesson-list{ gap: 10px; }
   .section-list{ gap: 10px; }
   .grid.cards{ gap: 12px; }
-  /* Админка: модалка и элементы перенесены в стили админки */
+
 }
 
-/* Планшеты: 721–1280px */
-@media (min-width: 721px) and (max-width: 1280px){
+
+/* Планшеты: 720–1279px */
+
+@media (min-width: 720px) and (max-width: 1279px){
   /* Планшеты: отступы для тестов */
   .tests{ gap: 14px; }
   .tests .test-question{
     padding: 12px;
     border-radius: 12px;
   }
-  /* Админка: правила перенесены в стили админки */
 
   /* Карточки и правки админки */
   .card{ padding: 16px; }
@@ -684,22 +682,25 @@ body.theme-dark .answer.wrong{
   .grid.cards{ gap: 14px; }
   .section-list{ gap: 12px; }
   .lesson-list{ gap: 10px; }
-  /* Админка: модалка и элементы перенесены в стили админки */
+  .lesson{ font-size: 160%; }
 }
 
-/* Notebooks: 1281–1600px — правила выше для .tests */
-@media (min-width: 1281px) and (max-width: 1600px){
+
+/* Ноутбуки: 1280-1599 px */
+
+@media (min-width: 1280px) and (max-width: 1599px){
   .card{ padding: 18px; }
   .level-card{ padding: 18px; }
   .section-card{ padding: 16px; }
   .grid.cards{ gap: 16px; }
   .section-list{ gap: 14px; }
   .lesson-list{ gap: 10px; }
-  /* Админка: модалка и элементы перенесены в стили админки */
 }
 
-/* Monitors: 1601–1920px — правила выше для .tests */
-@media (min-width: 1601px) and (max-width: 1920px){
+
+/* Мониторы: 1600–1920px */
+
+@media (min-width: 1600px) and (max-width: 1920px){
   .card{ padding: 20px; }
   .level-card{ padding: 22px; }
   .section-card{ padding: 18px; }
@@ -717,8 +718,9 @@ body.theme-dark .answer.wrong{
   .grid.cards{ gap: 20px; }
   .section-list{ gap: 18px; }
   .lesson-list{ gap: 14px; }
-  /* Админка: модалка и элементы перенесены в стили админки */
 }
+
+
 
 /* ============================
    Конструктор тестов и задач
