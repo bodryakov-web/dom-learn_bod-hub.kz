@@ -638,8 +638,9 @@ body.theme-dark .answer.wrong{
    =========================== */
 /* Смартфоны: <=720px */
 @media (max-width: 720px){
-
+  
   /* Настройки публичного интерфейса */
+  .lesson{ font-size: 150%; }
   .grid.cards{ grid-template-columns: 1fr; }
   .lesson-nav{ grid-auto-flow: row; }
   .section-list{ grid-template-columns: 1fr; }
