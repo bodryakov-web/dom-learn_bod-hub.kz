@@ -70,17 +70,29 @@
 
   // Add copy buttons to code blocks
   document.querySelectorAll('.lesson pre').forEach(pre => {
-    // Create copy button
-    const button = document.createElement('button');
-    button.className = 'code-copy-btn';
-    button.title = 'Копировать код';
-    button.innerHTML = `
+    // SVG иконки (без текстовых подписей)
+    const COPY_ICON = `
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
       </svg>
-      <span>Копировать</span>
     `;
+    const CHECK_ICON = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+    const ERROR_ICON = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+    // Create copy button (только иконка)
+    const button = document.createElement('button');
+    button.className = 'code-copy-btn';
+    button.title = 'Копировать код';
+    button.innerHTML = COPY_ICON;
     
     // Position the button
     pre.style.position = 'relative';
@@ -93,26 +105,22 @@
       try {
         await navigator.clipboard.writeText(code);
         
-        // Show success feedback
-        const originalText = button.innerHTML;
-        button.innerHTML = `
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span>Скопировано!</span>
-        `;
+        // Show success feedback (только иконка галочки)
+        const originalHTML = COPY_ICON;
+        button.innerHTML = CHECK_ICON;
         button.classList.add('copied');
         
         // Reset button after 2 seconds
         setTimeout(() => {
-          button.innerHTML = originalText;
+          button.innerHTML = originalHTML;
           button.classList.remove('copied');
         }, 2000);
       } catch (err) {
         console.error('Failed to copy code: ', err);
-        button.textContent = 'Ошибка копирования';
+        const originalHTML = COPY_ICON;
+        button.innerHTML = ERROR_ICON;
         setTimeout(() => {
-          button.innerHTML = originalText;
+          button.innerHTML = originalHTML;
         }, 2000);
       }
     });
