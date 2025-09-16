@@ -560,16 +560,12 @@
 
     btnSave.addEventListener('click', function(){
       send(false)
-        .then(function(){ 
+        .then(function(res){
+          // Успешно сохранено
           flash(status1,'Сохранено');
-          // Update the lesson ID if it was a new lesson
-          if (ls && ls.id === null) {
-            return api('/api.php?action=lesson_get&id=' + encodeURIComponent(payload.id))
-              .then(function(updatedLesson) {
-                if (updatedLesson && updatedLesson.id) {
-                  ls.id = updatedLesson.id;
-                }
-              });
+          // Если это новый урок и сервер вернул id — сохраняем его локально
+          if (ls && (ls.id === null || typeof ls.id === 'undefined') && res && res.id){
+            ls.id = res.id;
           }
         })
         .catch(function(e){ 
@@ -579,7 +575,13 @@
     });
     btnPub.addEventListener('click', function(){
       send(true)
-        .then(function(){ flash(status2,'Опубликовано'); })
+        .then(function(res){
+          // Если новый урок — зафиксируем id
+          if (ls && (ls.id === null || typeof ls.id === 'undefined') && res && res.id){
+            ls.id = res.id;
+          }
+          flash(status2,'Опубликовано');
+        })
         .then(function(){ dlg.remove(); })
         .then(function(){ if(typeof onDone==='function') onDone(ls.section_id); })
         .catch(function(e){ if(e && e.message==='Неверный slug') return; alert('Ошибка: '+e.message); });
