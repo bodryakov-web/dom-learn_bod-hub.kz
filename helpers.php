@@ -78,6 +78,49 @@ function sanitize_black_span_color(string $html): string {
         return $html;
     }
 
+    // 1) Быстрый и устойчивый проход на регулярках: разворачиваем любые span с color=чёрный
+    // Поддерживаются двойные/одинарные кавычки, любой порядок свойств, пробелы и !important
+    $prevHtml = null;
+    $iterGuard = 0;
+    while ($prevHtml !== $html && $iterGuard < 5) { // несколько итераций на случай вложенных span
+        $prevHtml = $html;
+        $html = preg_replace_callback(
+            '/<span\b([^>]*)>([\s\S]*?)<\/span>/i',
+            function ($m) {
+                $attrs = $m[1];
+                $content = $m[2];
+                // Ищем style="..." или style='...'
+                if (!preg_match('/style\s*=\s*("|\\')(.*?)(\1)/is', $attrs, $sm)) {
+                    return $m[0];
+                }
+                $styleRaw = strtolower(trim($sm[2]));
+                // Нормализуем стиль: уберём переносы/много пробелов
+                $styleNorm = preg_replace('/\s+/', ' ', $styleRaw);
+                // Выделим значение color
+                $colorVal = null;
+                // Разбираем на пары свойств
+                foreach (preg_split('/;\s*/', $styleNorm) as $pair) {
+                    if ($pair === '') continue;
+                    $kv = array_map('trim', explode(':', $pair, 2));
+                    if (count($kv) === 2 && $kv[0] === 'color') {
+                        $colorVal = preg_replace('/!important\b/i', '', strtolower(trim($kv[1])));
+                        $colorVal = preg_replace('/\s+/', '', $colorVal);
+                        break;
+                    }
+                }
+                if ($colorVal === null) return $m[0];
+                $blackValues = ['hsl(0,0%,0%)','black','rgb(0,0,0)','rgba(0,0,0,1)','#000','#000000'];
+                if (in_array($colorVal, $blackValues, true)) {
+                    // Разворачиваем span: возвращаем только содержимое
+                    return $content;
+                }
+                return $m[0];
+            },
+            $html
+        );
+        $iterGuard++;
+    }
+
     $prev = libxml_use_internal_errors(true);
     $dom = new DOMDocument('1.0', 'UTF-8');
     // Оборачиваем во внешний контейнер для корректного парсинга фрагмента
