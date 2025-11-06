@@ -270,7 +270,7 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
             $content = json_decode($lesson['content'] ?? '{}', true) ?: [];
             $tests = $content['tests'] ?? [];
             $tasks = $content['tasks'] ?? [];
-            $theory_html = $content['theory_html'] ?? '';
+            $theory_html = sanitize_black_span_color($content['theory_html'] ?? '');
 
             render_header($lesson['title_ru']);
             breadcrumbs([
@@ -290,7 +290,7 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
                 foreach ($tests as $qi => $q) {
                     $qid = 'q' . ($qi+1);
                     echo '<div class="test-question" data-correct="' . (int)($q['correctIndex'] ?? -1) . '">';
-                    $qh = $q['question_html'] ?? '';
+                    $qh = sanitize_black_span_color($q['question_html'] ?? '');
                     echo '<h3>' . ($qh !== '' ? $qh : e($q['question'] ?? '')) . '</h3>';
                     echo '<ul class="answers">';
                     foreach (($q['answers'] ?? []) as $ai => $ans) {
@@ -308,7 +308,7 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
                 foreach ($tasks as $t) {
                     echo '<article class="task">';
                     if (!empty($t['title'])) echo '<h3>' . e($t['title']) . '</h3>';
-                    echo '<div class="task-text">' . ($t['text_html'] ?? '') . '</div>';
+                    echo '<div class="task-text">' . sanitize_black_span_color($t['text_html'] ?? '') . '</div>';
                     echo '</article>';
                 }
                 echo '</section>';

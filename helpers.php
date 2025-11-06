@@ -62,3 +62,84 @@ function validate_slug(string $slug): bool {
 }
 
 // rrmdir() удалён как неиспользуемый дубликат (см. db-api.php::db_rrmdir)
+
+/**
+ * Очистка HTML-контента: разворачивает (удаляет тег) <span style="color:hsl(0,0%,0%)">...</span>
+ * и возвращает внутреннее содержимое без этого инлайнового цвета.
+ *
+ * Поддерживает вариации пробелов в значении цвета: hsl(0, 0%, 0%).
+ * Если парсинг DOM не удался, возвращает исходную строку.
+ */
+function sanitize_black_span_color(string $html): string {
+    if ($html === '') return $html;
+    // Быстрая проверка наличия ключевых подпоследовательностей
+    if (stripos($html, '<span') === false || stripos($html, 'color:') === false || stripos($html, 'hsl') === false) {
+        return $html;
+    }
+
+    $prev = libxml_use_internal_errors(true);
+    $dom = new DOMDocument('1.0', 'UTF-8');
+    // Оборачиваем во внешний контейнер для корректного парсинга фрагмента
+    $wrapped = '<!DOCTYPE html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><div id="__root__">' . $html . '</div>';
+    // Загружаем как HTML. DOMDocument ожидает HTML в ISO-8859-1, поэтому явно указываем мета
+    $loaded = $dom->loadHTML($wrapped, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    if (!$loaded) {
+        libxml_clear_errors();
+        libxml_use_internal_errors($prev);
+        return $html;
+    }
+
+    $root = $dom->getElementById('__root__');
+    if (!$root) {
+        libxml_clear_errors();
+        libxml_use_internal_errors($prev);
+        return $html;
+    }
+
+    $spans = $root->getElementsByTagName('span');
+    // Коллекция «живая», поэтому сначала скопируем элементы в массив
+    $toProcess = [];
+    foreach ($spans as $sp) { $toProcess[] = $sp; }
+
+    foreach ($toProcess as $sp) {
+        /** @var DOMElement $sp */
+        if (!$sp->hasAttribute('style')) continue;
+        $style = $sp->getAttribute('style');
+        // Нормализуем стиль: удаляем пробелы вокруг двоеточий/точек с запятой
+        $norm = strtolower(trim($style));
+        // Ищем свойство color со значением hsl(0,0%,0%) с допускаемыми пробелами
+        // Сначала грубая проверка по подстроке
+        if (strpos($norm, 'color') === false || strpos($norm, 'hsl') === false) continue;
+
+        // Парсим стиль на пары свойств
+        $pairs = array_filter(array_map('trim', explode(';', $norm)), 'strlen');
+        $styles = [];
+        foreach ($pairs as $p) {
+            $kv = array_map('trim', explode(':', $p, 2));
+            if (count($kv) === 2) {
+                $styles[$kv[0]] = $kv[1];
+            }
+        }
+        if (!isset($styles['color'])) continue;
+        $val = preg_replace('/\s+/', '', $styles['color']); // удаляем все пробелы для сравнения
+        if ($val === 'hsl(0,0%,0%)') {
+            // Разворачиваем span: перемещаем всех детей перед span и удаляем span
+            while ($sp->firstChild) {
+                $sp->parentNode->insertBefore($sp->firstChild, $sp);
+            }
+            if ($sp->parentNode) {
+                $sp->parentNode->removeChild($sp);
+            }
+        }
+    }
+
+    // Извлекаем HTML из корневого контейнера
+    $out = '';
+    foreach (iterator_to_array($root->childNodes) as $node) {
+        $out .= $dom->saveHTML($node);
+    }
+
+    libxml_clear_errors();
+    libxml_use_internal_errors($prev);
+    return $out;
+}
