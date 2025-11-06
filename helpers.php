@@ -74,7 +74,7 @@ function sanitize_black_span_color(string $html): string {
     if ($html === '') return $html;
     // Быстрая проверка наличия ключевых подпоследовательностей
     // Достаточно искать <span и color:, не ограничиваемся только hsl
-    if (stripos($html, '<span') === false || stripos($html, 'color:') === false) {
+    if (stripos($html, '<span') === false || stripos($html, 'color') === false) {
         return $html;
     }
 
@@ -131,6 +131,7 @@ function sanitize_black_span_color(string $html): string {
             'hsl(0,0%,0%)',
             'black',
             'rgb(0,0,0)',
+            'rgba(0,0,0,1)',
             '#000',
             '#000000'
         ];
