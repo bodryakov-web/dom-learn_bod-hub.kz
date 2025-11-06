@@ -86,12 +86,12 @@ function sanitize_black_span_color(string $html): string {
         while ($prevHtml !== $html && $iterGuard < 5) { // несколько итераций на случай вложенных span
             $prevHtml = $html;
             $html = preg_replace_callback(
-                '/<span\b([^>]*)>([\s\S]*?)<\/span>/i',
+                "/<span\\b([^>]*)>([\\s\\S]*?)<\\/span>/i",
                 function ($m) {
                     $attrs = $m[1];
                     $content = $m[2];
                     // Ищем style="..." или style='...'
-                    if (!preg_match('/style\s*=\s*("|\\')(.*?)(\1)/is', $attrs, $sm)) {
+                    if (!preg_match("/style\\s*=\\s*(\"|')(.*?)(\\1)/is", $attrs, $sm)) {
                         return $m[0];
                     }
                     $styleRaw = strtolower(trim($sm[2]));
