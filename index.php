@@ -280,6 +280,8 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
                 ['href' => '', 'label' => $lesson['title_ru']],
             ]);
             echo '<main class="container lesson">';
+            // Начинаем буферизацию для финальной санитарной обработки всего HTML статьи
+            ob_start();
             echo '<article class="lesson-body">';
             echo '<h1>' . e($lesson['title_ru']) . '</h1>';
             echo '<section class="theory">' . $theory_html . '</section>';
@@ -331,6 +333,9 @@ if (count($parts) >= 1 && preg_match('~^(\d+)-([a-z-]+)$~', $parts[0], $m1)) {
             echo '</nav>';
 
             echo '</article>';
+            // Получаем HTML статьи и выполняем финальную очистку от чёрных инлайновых span
+            $__article_html = ob_get_clean();
+            echo sanitize_black_span_color($__article_html);
             echo '</main>';
 
             render_footer();
