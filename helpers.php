@@ -73,7 +73,8 @@ function validate_slug(string $slug): bool {
 function sanitize_black_span_color(string $html): string {
     if ($html === '') return $html;
     // Быстрая проверка наличия ключевых подпоследовательностей
-    if (stripos($html, '<span') === false || stripos($html, 'color:') === false || stripos($html, 'hsl') === false) {
+    // Достаточно искать <span и color:, не ограничиваемся только hsl
+    if (stripos($html, '<span') === false || stripos($html, 'color:') === false) {
         return $html;
     }
 
@@ -121,8 +122,19 @@ function sanitize_black_span_color(string $html): string {
             }
         }
         if (!isset($styles['color'])) continue;
-        $val = preg_replace('/\s+/', '', $styles['color']); // удаляем все пробелы для сравнения
-        if ($val === 'hsl(0,0%,0%)') {
+        $valNorm = strtolower(trim($styles['color']));
+        // Убираем !important и все пробелы
+        $valNorm = preg_replace('/!important\b/i', '', $valNorm);
+        $val = preg_replace('/\s+/', '', $valNorm);
+        // Целевые значения «чёрного» цвета
+        $blackValues = [
+            'hsl(0,0%,0%)',
+            'black',
+            'rgb(0,0,0)',
+            '#000',
+            '#000000'
+        ];
+        if (in_array($val, $blackValues, true)) {
             // Разворачиваем span: перемещаем всех детей перед span и удаляем span
             while ($sp->firstChild) {
                 $sp->parentNode->insertBefore($sp->firstChild, $sp);
