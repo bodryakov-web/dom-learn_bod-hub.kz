@@ -469,6 +469,19 @@ h1, h2, h3{
   line-height: 1.2;
 }
 
+/* Подстраховка: нейтрализуем инлайновый чёрный цвет текста внутри контента урока */
+.lesson span[style*="color:black"],
+.lesson span[style*="color: black"],
+.lesson span[style*="color:#000"],
+.lesson span[style*="color:#000000"],
+.lesson span[style*="color:hsl(0,0%,0%)"],
+.lesson span[style*="color: rgb(0, 0, 0)"],
+.lesson span[style*="color:rgb(0,0,0)"],
+.lesson span[style*="color: rgba(0, 0, 0, 1)"],
+.lesson span[style*="color:rgba(0,0,0,1)"]{
+  color: inherit !important;
+}
+
 /* Стиль 'мини' для уменьшения текста в два раза */
 .mini {
   font-size: 0.5em !important;
