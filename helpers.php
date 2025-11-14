@@ -104,12 +104,45 @@ function sanitize_black_span_color(string $html): string {
                         if ($pair === '') continue;
                         $kv = array_map('trim', explode(':', $pair, 2));
                         if (count($kv) === 2 && $kv[0] === 'color') {
-                            $colorVal = preg_replace('/!important\b/i', '', strtolower(trim($kv[1])));
+                            $colorVal = preg_replace('/!important\\b/i', '', strtolower(trim($kv[1])));
                             $colorVal = preg_replace('/\s+/', '', $colorVal);
                             break;
                         }
                     }
                     if ($colorVal === null) return $m[0];
+                    // Специальный кейс: color:#1B1C1D — удалить только это свойство из style, сохранив span
+                    if ($colorVal === '#1b1c1d') {
+                        $quote = $sm[1];
+                        $styleOriginal = $sm[2]; // оригинальный регистр и пробелы внутри кавычек
+                        // Пересобираем style без color
+                        $decls = preg_split('/;\s*/', $styleOriginal);
+                        $kept = [];
+                        foreach ($decls as $d) {
+                            if ($d === '') continue;
+                            $kv = array_map('trim', explode(':', $d, 2));
+                            if (count($kv) !== 2) { $kept[] = $d; continue; }
+                            $prop = strtolower($kv[0]);
+                            if ($prop === 'color') {
+                                $valNorm = strtolower(preg_replace('/\s+/', '', preg_replace('/!important\b/i','', $kv[1])));
+                                if ($valNorm === '#1b1c1d') {
+                                    // пропускаем это свойство
+                                    continue;
+                                }
+                            }
+                            $kept[] = $kv[0] . ':' . $kv[1];
+                        }
+                        $newStyle = implode('; ', $kept);
+                        // Удаляем исходный фрагмент style="..." из $attrs и вставляем новый если остался
+                        $attrsModified = $attrs;
+                        $attrsModified = preg_replace("/\s*style\s*=\s*(\"|')(.*?)(\\1)/is", '', $attrsModified, 1);
+                        $attrsModified = rtrim($attrsModified);
+                        if ($newStyle !== '') {
+                            // гарантируем ведущий пробел перед атрибутом
+                            $attrsModified .= ' style=' . $quote . $newStyle . $quote;
+                        }
+                        // Возвращаем исходный span с модифицированными атрибутами
+                        return '<span' . $attrsModified . '>' . $content . '</span>';
+                    }
                     $blackValues = ['hsl(0,0%,0%)','black','rgb(0,0,0)','rgba(0,0,0,1)','#000','#000000'];
                     if (in_array($colorVal, $blackValues, true)) {
                         // Разворачиваем span: возвращаем только содержимое
